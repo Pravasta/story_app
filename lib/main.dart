@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:story_app/core/common/common.dart';
 import 'package:story_app/core/injection/env.dart';
-import 'package:story_app/core/logic/cubit/app_permissions_cubit.dart';
+import 'package:story_app/core/logic/app_permissions/app_permissions_cubit.dart';
+import 'package:story_app/core/logic/language/language_cubit.dart';
 import 'package:story_app/core/repositories/app_permissions_repositories.dart';
+import 'package:story_app/core/repositories/language_repositories.dart';
 import 'package:story_app/core/routes/app_route.dart';
 import 'package:story_app/core/theme/app_theme.dart';
 
@@ -39,15 +42,33 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => AddNewStoryCubit(AddStoryRepositoryImpl.create()),
         ),
+        BlocProvider(
+          create:
+              (_) =>
+                  LanguageCubit(LanguageRepositoriesImpl.create())
+                    ..getLanguage(),
+        ),
       ],
-      child: MaterialApp.router(
-        title: 'Story App',
-        debugShowCheckedModeBanner: false,
-        showSemanticsDebugger: false,
-        themeMode: ThemeMode.light,
-        darkTheme: AppTheme.darkTheme(context),
-        theme: AppTheme.lightTheme(context),
-        routerConfig: AppRoute.route,
+      child: BlocBuilder<LanguageCubit, LanguageState>(
+        builder: (context, state) {
+          return MaterialApp.router(
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: [Locale('en', ''), Locale('id', '')],
+            title: 'Story App',
+            debugShowCheckedModeBanner: false,
+            showSemanticsDebugger: false,
+            themeMode: ThemeMode.light,
+            darkTheme: AppTheme.darkTheme(context),
+            theme: AppTheme.lightTheme(context),
+            routerConfig: AppRoute.route,
+            locale: Locale(state.languageCode, ''),
+          );
+        },
       ),
     );
   }

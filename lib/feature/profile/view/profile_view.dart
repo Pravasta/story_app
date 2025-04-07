@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:story_app/core/common/common.dart';
 import 'package:story_app/core/extensions/build_context_ext.dart';
 import 'package:story_app/core/model/response/login_response_model.dart';
 import 'package:story_app/core/routes/routes_name.dart';
@@ -111,21 +112,30 @@ class _ProfileViewState extends State<ProfileView> {
             Column(
               children: [
                 Text('112', style: appTextTheme(context).headlineSmall),
-                Text('Posts', style: appTextTheme(context).labelLarge),
+                Text(
+                  AppLocalizations.of(context)!.posts,
+                  style: appTextTheme(context).labelLarge,
+                ),
               ],
             ),
             const SizedBox(width: 20),
             Column(
               children: [
                 Text('1,112', style: appTextTheme(context).headlineSmall),
-                Text('Followers', style: appTextTheme(context).labelLarge),
+                Text(
+                  AppLocalizations.of(context)!.followers,
+                  style: appTextTheme(context).labelLarge,
+                ),
               ],
             ),
             const SizedBox(width: 20),
             Column(
               children: [
                 Text('112', style: appTextTheme(context).headlineSmall),
-                Text('Following', style: appTextTheme(context).labelLarge),
+                Text(
+                  AppLocalizations.of(context)!.following,
+                  style: appTextTheme(context).labelLarge,
+                ),
               ],
             ),
           ],

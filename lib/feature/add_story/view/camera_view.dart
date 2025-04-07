@@ -10,6 +10,8 @@ import 'package:story_app/core/routes/routes_name.dart';
 import 'package:story_app/feature/add_story/cubit/camera/camera_cubit.dart';
 import 'package:story_app/main.dart';
 
+import '../../../core/common/common.dart';
+
 class CameraView extends StatefulWidget {
   const CameraView({super.key});
 
@@ -76,9 +78,9 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
               ),
               IconButton(
                 onPressed: () {
-                  AppTopSnackBar(
-                    context,
-                  ).showInfo('This feature is not available yet');
+                  AppTopSnackBar(context).showInfo(
+                    AppLocalizations.of(context)!.feature_not_available,
+                  );
                 },
                 icon: Icon(
                   Icons.flash_off_outlined,

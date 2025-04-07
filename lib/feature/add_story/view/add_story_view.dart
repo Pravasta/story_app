@@ -4,9 +4,10 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:story_app/core/common/common.dart';
 import 'package:story_app/core/components/app_top_snackbar.dart';
 import 'package:story_app/core/extensions/build_context_ext.dart';
-import 'package:story_app/core/logic/cubit/app_permissions_cubit.dart';
+import 'package:story_app/core/logic/app_permissions/app_permissions_cubit.dart';
 import 'package:story_app/core/routes/routes_name.dart';
 import 'package:story_app/core/theme/app_color.dart';
 import 'package:story_app/feature/add_story/cubit/fetch_image_gallery/fetch_image_gallery_cubit.dart';
@@ -45,7 +46,10 @@ class _AddStoryViewState extends State<AddStoryView> {
           color: Theme.of(context).colorScheme.primary,
         ),
         centerTitle: true,
-        title: Text('New Story', style: appTextTheme(context).displaySmall),
+        title: Text(
+          AppLocalizations.of(context)!.new_story,
+          style: appTextTheme(context).displaySmall,
+        ),
         actions: [
           TextButton(
             onPressed: () {
@@ -61,7 +65,7 @@ class _AddStoryViewState extends State<AddStoryView> {
               }
             },
             child: Text(
-              'Next',
+              AppLocalizations.of(context)!.next,
               style: appTextTheme(context).bodyMedium!.copyWith(
                 color: appColorScheme(context).primary,
                 fontWeight: FontWeight.bold,
@@ -97,8 +101,9 @@ class _AddStoryViewState extends State<AddStoryView> {
                     )
                     : Center(
                       child: Text(
-                        'No image selected',
+                        AppLocalizations.of(context)!.no_selected_image,
                         style: appTextTheme(context).displayMedium,
+                        textAlign: TextAlign.center,
                       ),
                     ),
           );
@@ -123,10 +128,10 @@ class _AddStoryViewState extends State<AddStoryView> {
               onPressed: () {
                 AppTopSnackBar(
                   context,
-                ).showInfo('The feature is not available yet');
+                ).showInfo(AppLocalizations.of(context)!.feature_not_available);
               },
               child: Text(
-                'Select multiple',
+                AppLocalizations.of(context)!.select_multiple_image,
                 style: appTextTheme(context).titleMedium!.copyWith(
                   color: AppColor.white,
                   fontWeight: FontWeight.bold,

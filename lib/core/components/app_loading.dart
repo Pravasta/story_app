@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:story_app/core/common/common.dart';
 import 'package:story_app/core/theme/app_color.dart';
 import 'package:story_app/core/utils/assets.gen.dart';
 import 'package:story_app/main.dart';
@@ -46,7 +47,7 @@ class AppLoading extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        label ?? 'Mohon tunggu, ya..',
+                        label ?? AppLocalizations.of(context)!.loading,
                         textAlign: TextAlign.center,
                         style: appTextTheme(
                           context,

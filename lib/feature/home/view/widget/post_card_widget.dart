@@ -7,6 +7,8 @@ import 'package:story_app/core/model/response/get_all_stories_response_model.dar
 import 'package:story_app/core/utils/assets.gen.dart';
 import 'package:story_app/main.dart';
 
+import '../../../../core/common/common.dart';
+
 class PostCardWidget extends StatelessWidget {
   const PostCardWidget({super.key, required this.story});
 
@@ -58,9 +60,9 @@ class PostCardWidget extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () {
-                  AppTopSnackBar(
-                    context,
-                  ).showInfo('This feature is not available yet');
+                  AppTopSnackBar(context).showInfo(
+                    AppLocalizations.of(context)!.feature_not_available,
+                  );
                 },
                 icon: Icon(
                   Icons.favorite_border,
@@ -70,9 +72,9 @@ class PostCardWidget extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-                  AppTopSnackBar(
-                    context,
-                  ).showInfo('This feature is not available yet');
+                  AppTopSnackBar(context).showInfo(
+                    AppLocalizations.of(context)!.feature_not_available,
+                  );
                 },
                 icon: Icon(
                   Icons.comment_outlined,
@@ -82,9 +84,9 @@ class PostCardWidget extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-                  AppTopSnackBar(
-                    context,
-                  ).showInfo('This feature is not available yet');
+                  AppTopSnackBar(context).showInfo(
+                    AppLocalizations.of(context)!.feature_not_available,
+                  );
                 },
                 icon: Icon(
                   Icons.share,
@@ -95,9 +97,9 @@ class PostCardWidget extends StatelessWidget {
               Spacer(),
               IconButton(
                 onPressed: () {
-                  AppTopSnackBar(
-                    context,
-                  ).showInfo('This feature is not available yet');
+                  AppTopSnackBar(context).showInfo(
+                    AppLocalizations.of(context)!.feature_not_available,
+                  );
                 },
                 icon: Icon(
                   Icons.bookmark_border_outlined,
@@ -114,7 +116,7 @@ class PostCardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '112,099 Likes',
+                  '112,099 ${AppLocalizations.of(context)!.likes}',
                   style: appTextTheme(
                     context,
                   ).labelLarge!.copyWith(fontWeight: FontWeight.bold),

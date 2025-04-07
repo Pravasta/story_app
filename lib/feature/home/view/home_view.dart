@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:story_app/core/common/common.dart';
 import 'package:story_app/core/components/app_shimmer.dart';
 import 'package:story_app/core/components/app_top_snackbar.dart';
 import 'package:story_app/core/extensions/build_context_ext.dart';
@@ -38,7 +39,7 @@ class _HomeViewState extends State<HomeView> {
             onTap:
                 () => AppTopSnackBar(
                   context,
-                ).showInfo('This feature is not available yet'),
+                ).showInfo(AppLocalizations.of(context)!.feature_not_available),
             child: Icon(
               Icons.favorite_border,
               size: 30,

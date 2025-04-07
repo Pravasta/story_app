@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class SharedPrefService {
-  Future<void> setSharedPref(String key, String value);
+  Future<void> setSharedPref(String key, dynamic value);
   Future<String?> getSharedPref(String key);
   Future<void> removeSharedPref(String key);
   Future<void> clearSharedPref();

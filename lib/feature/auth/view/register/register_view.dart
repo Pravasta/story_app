@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:story_app/core/common/common.dart';
 import 'package:story_app/core/components/app_button.dart';
 import 'package:story_app/core/components/app_text_field.dart';
 import 'package:story_app/core/components/app_top_snackbar.dart';
@@ -10,6 +11,9 @@ import 'package:story_app/core/theme/app_color.dart';
 import 'package:story_app/core/utils/global_state.dart';
 import 'package:story_app/feature/auth/logic/register/register_cubit.dart';
 import 'package:story_app/main.dart';
+
+import '../../../../core/components/app_loading.dart';
+import '../../../../core/logic/language/language_cubit.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -46,12 +50,12 @@ class _RegisterViewState extends State<RegisterView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Register your account!',
+          AppLocalizations.of(context)!.register_appbar,
           style: appTextTheme(context).displayMedium,
         ),
         SizedBox(height: 20),
         Text(
-          'With registration you can access all the features of the app and enjoy the content.',
+          AppLocalizations.of(context)!.register_description,
           style: appTextTheme(context).bodyMedium,
         ),
       ],
@@ -61,7 +65,7 @@ class _RegisterViewState extends State<RegisterView> {
   Widget nameFieldSection() {
     return AppValidatorTextField(
       controller: _nameController,
-      labelText: 'Full Name',
+      labelText: AppLocalizations.of(context)!.fullname,
       hintText: 'Enter your full name',
       prefixIcon: const Icon(Icons.person_outline),
       validator: (value) {
@@ -81,7 +85,7 @@ class _RegisterViewState extends State<RegisterView> {
   Widget emailFieldSection() {
     return AppValidatorTextField(
       controller: _emailController,
-      labelText: 'Email Address',
+      labelText: AppLocalizations.of(context)!.email,
       hintText: 'Enter your email address',
       prefixIcon: const Icon(Icons.email_outlined),
       validator: (value) {
@@ -103,7 +107,7 @@ class _RegisterViewState extends State<RegisterView> {
       builder: (context, setState) {
         return AppValidatorTextField(
           controller: _passwordController,
-          labelText: 'Password',
+          labelText: AppLocalizations.of(context)!.password,
           hintText: 'Enter your password',
           prefixIcon: const Icon(Icons.lock_outline),
           validator: (value) {
@@ -152,7 +156,7 @@ class _RegisterViewState extends State<RegisterView> {
         }
 
         return AppButton(
-          title: 'Register',
+          title: AppLocalizations.of(context)!.register,
           onTap: () {
             if (_formKey.currentState!.validate()) {
               final data = RegisterRequestModel(
@@ -176,11 +180,11 @@ class _RegisterViewState extends State<RegisterView> {
   Widget registerButtonSection() {
     return RichText(
       text: TextSpan(
-        text: 'Already have an account? ',
+        text: AppLocalizations.of(context)!.already_have_account,
         style: appTextTheme(context).bodySmall,
         children: [
           TextSpan(
-            text: 'Login',
+            text: ' ${AppLocalizations.of(context)!.login}',
             style: appTextTheme(context).bodySmall!.copyWith(
               color: appColorScheme(context).primary,
               fontWeight: FontWeight.bold,
@@ -198,9 +202,59 @@ class _RegisterViewState extends State<RegisterView> {
 
   Widget bottomSection() {
     return Text(
-      'By registering, you agree to our Terms of Service and Privacy Policy.',
+      AppLocalizations.of(context)!.terms_and_conditions,
       textAlign: TextAlign.center,
       style: appTextTheme(context).bodySmall,
+    );
+  }
+
+  Widget changeLanguageSection() {
+    return BlocConsumer<LanguageCubit, LanguageState>(
+      listener: (context, state) {
+        if (state.status.isFailure) {
+          AppTopSnackBar(context).showDanger(state.error);
+        }
+
+        if (state.status.isSuccess) {
+          AppTopSnackBar(
+            context,
+          ).showSuccess("Language changed to ${state.languageCode}");
+        }
+      },
+      builder: (context, state) {
+        return AppLoading(
+          isLoading: state.status.isLoading,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              DropdownButton<String>(
+                value: state.languageCode,
+                items: [
+                  DropdownMenuItem(
+                    value: 'en',
+                    child: Text(
+                      'English',
+                      style: appTextTheme(context).bodySmall,
+                    ),
+                  ),
+                  DropdownMenuItem(
+                    value: 'id',
+                    child: Text(
+                      'Indonesia',
+                      style: appTextTheme(context).bodySmall,
+                    ),
+                  ),
+                ],
+                onChanged: (value) {
+                  if (value != null) {
+                    context.read<LanguageCubit>().setLanguage(value);
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -209,12 +263,14 @@ class _RegisterViewState extends State<RegisterView> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.symmetric(horizontal: 20),
           child: Form(
             key: _formKey,
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  changeLanguageSection(),
+                  SizedBox(height: 10),
                   headerSection(),
                   SizedBox(height: 40),
                   nameFieldSection(),

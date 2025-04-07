@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:story_app/core/common/common.dart';
 import 'package:story_app/core/components/app_button.dart';
 import 'package:story_app/core/components/app_loading.dart';
 import 'package:story_app/core/components/app_top_snackbar.dart';
@@ -52,7 +53,10 @@ class _PreviewStoryPageState extends State<PreviewStoryPage> {
           color: Theme.of(context).colorScheme.primary,
         ),
         centerTitle: true,
-        title: Text('New Story', style: appTextTheme(context).displaySmall),
+        title: Text(
+          AppLocalizations.of(context)!.new_story,
+          style: appTextTheme(context).displaySmall,
+        ),
       );
     }
 
@@ -77,7 +81,7 @@ class _PreviewStoryPageState extends State<PreviewStoryPage> {
         minLines: 1,
         controller: _descriptionController,
         decoration: InputDecoration(
-          hintText: 'Write a caption...',
+          hintText: AppLocalizations.of(context)!.write_caption,
           hintStyle: appTextTheme(
             context,
           ).bodyMedium!.copyWith(color: appColorScheme(context).primary),
@@ -99,7 +103,9 @@ class _PreviewStoryPageState extends State<PreviewStoryPage> {
     Widget addLocationSection() {
       return GestureDetector(
         onTap: () {
-          AppTopSnackBar(context).showDanger('Feature not available yet');
+          AppTopSnackBar(
+            context,
+          ).showDanger(AppLocalizations.of(context)!.feature_not_available);
         },
         child: Row(
           children: [
@@ -110,7 +116,7 @@ class _PreviewStoryPageState extends State<PreviewStoryPage> {
             ),
             const SizedBox(width: 10),
             Text(
-              'Add location',
+              AppLocalizations.of(context)!.add_location,
               style: appTextTheme(
                 context,
               ).bodyMedium!.copyWith(color: appColorScheme(context).primary),
@@ -123,7 +129,9 @@ class _PreviewStoryPageState extends State<PreviewStoryPage> {
     Widget addMussicSection() {
       return GestureDetector(
         onTap: () {
-          AppTopSnackBar(context).showDanger('Feature not available yet');
+          AppTopSnackBar(
+            context,
+          ).showDanger(AppLocalizations.of(context)!.feature_not_available);
         },
         child: Row(
           children: [
@@ -134,7 +142,7 @@ class _PreviewStoryPageState extends State<PreviewStoryPage> {
             ),
             const SizedBox(width: 10),
             Text(
-              'Add music',
+              AppLocalizations.of(context)!.add_music,
               style: appTextTheme(
                 context,
               ).bodyMedium!.copyWith(color: appColorScheme(context).primary),
@@ -146,7 +154,7 @@ class _PreviewStoryPageState extends State<PreviewStoryPage> {
 
     Widget buttonPostSection() {
       return AppButton(
-        title: 'Post',
+        title: AppLocalizations.of(context)!.button_post,
         onTap: () {
           final data = AddNewStoryRequestModel(
             description: _descriptionController.text.trim(),

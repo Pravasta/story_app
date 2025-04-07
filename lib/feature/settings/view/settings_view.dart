@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:story_app/core/common/common.dart';
 import 'package:story_app/core/components/app_button.dart';
 import 'package:story_app/core/components/app_loading.dart';
 import 'package:story_app/core/components/app_top_snackbar.dart';
@@ -22,7 +23,7 @@ class _SettingsViewState extends State<SettingsView> {
     AppBar appBar() {
       return AppBar(
         title: Text(
-          'Settings and privacy',
+          AppLocalizations.of(context)!.settings_and_privacy,
           style: appTextTheme(context).bodyMedium?.copyWith(
             color: appColorScheme(context).primary,
             fontWeight: FontWeight.bold,
@@ -34,7 +35,7 @@ class _SettingsViewState extends State<SettingsView> {
 
     Widget buttonLogout() {
       return AppButton(
-        title: 'Logout',
+        title: AppLocalizations.of(context)!.logout,
         onTap: () {
           context.read<LogoutCubit>().logout();
         },

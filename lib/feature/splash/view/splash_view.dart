@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:story_app/core/common/common.dart';
 import 'package:story_app/core/routes/routes_name.dart';
 import 'package:story_app/feature/splash/cubit/login_status/login_status_cubit.dart';
 import 'package:story_app/main.dart';
@@ -34,7 +35,7 @@ class _SplashViewState extends State<SplashView> {
                 Text('Story App', style: appTextTheme(context).displayMedium),
                 SizedBox(height: 20),
                 Text(
-                  'Welcome to Story App, \n you can create every story you want',
+                  AppLocalizations.of(context)!.splash_description,
                   textAlign: TextAlign.center,
                   style: appTextTheme(
                     context,
