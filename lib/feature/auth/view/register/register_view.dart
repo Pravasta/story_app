@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:story_app/core/common/common.dart';
 import 'package:story_app/core/components/app_button.dart';
+import 'package:story_app/core/components/app_loading.dart';
 import 'package:story_app/core/components/app_text_field.dart';
 import 'package:story_app/core/components/app_top_snackbar.dart';
 import 'package:story_app/core/model/request/register_request_model.dart';
@@ -12,7 +13,6 @@ import 'package:story_app/core/utils/global_state.dart';
 import 'package:story_app/feature/auth/logic/register/register_cubit.dart';
 import 'package:story_app/main.dart';
 
-import '../../../../core/components/app_loading.dart';
 import '../../../../core/logic/language/language_cubit.dart';
 
 class RegisterView extends StatefulWidget {
@@ -139,41 +139,23 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   Widget buttonSubmitSection() {
-    return BlocConsumer<RegisterCubit, RegisterState>(
-      listener: (context, state) {
-        if (state.globalState.isFailed) {
-          AppTopSnackBar(context).showDanger(state.message);
-        }
+    return AppButton(
+      title: AppLocalizations.of(context)!.register,
+      onTap: () {
+        if (_formKey.currentState!.validate()) {
+          final data = RegisterRequestModel(
+            name: _nameController.text.trim(),
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+          );
 
-        if (state.globalState.isSuccessSubmit) {
-          AppTopSnackBar(context).showSuccess(state.message);
-          context.pop();
+          context.read<RegisterCubit>().register(data);
         }
       },
-      builder: (context, state) {
-        if (state.globalState.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        return AppButton(
-          title: AppLocalizations.of(context)!.register,
-          onTap: () {
-            if (_formKey.currentState!.validate()) {
-              final data = RegisterRequestModel(
-                name: _nameController.text.trim(),
-                email: _emailController.text.trim(),
-                password: _passwordController.text.trim(),
-              );
-
-              context.read<RegisterCubit>().register(data);
-            }
-          },
-          height: 50,
-          titleColor: appColorScheme(context).primary,
-          borderColor: appColorScheme(context).secondary,
-          backgroundColor: appColorScheme(context).primaryContainer,
-        );
-      },
+      height: 50,
+      titleColor: appColorScheme(context).primary,
+      borderColor: appColorScheme(context).secondary,
+      backgroundColor: appColorScheme(context).primaryContainer,
     );
   }
 
@@ -222,37 +204,34 @@ class _RegisterViewState extends State<RegisterView> {
         }
       },
       builder: (context, state) {
-        return AppLoading(
-          isLoading: state.status.isLoading,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              DropdownButton<String>(
-                value: state.languageCode,
-                items: [
-                  DropdownMenuItem(
-                    value: 'en',
-                    child: Text(
-                      'English',
-                      style: appTextTheme(context).bodySmall,
-                    ),
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            DropdownButton<String>(
+              value: state.languageCode,
+              items: [
+                DropdownMenuItem(
+                  value: 'en',
+                  child: Text(
+                    'English',
+                    style: appTextTheme(context).bodySmall,
                   ),
-                  DropdownMenuItem(
-                    value: 'id',
-                    child: Text(
-                      'Indonesia',
-                      style: appTextTheme(context).bodySmall,
-                    ),
+                ),
+                DropdownMenuItem(
+                  value: 'id',
+                  child: Text(
+                    'Indonesia',
+                    style: appTextTheme(context).bodySmall,
                   ),
-                ],
-                onChanged: (value) {
-                  if (value != null) {
-                    context.read<LanguageCubit>().setLanguage(value);
-                  }
-                },
-              ),
-            ],
-          ),
+                ),
+              ],
+              onChanged: (value) {
+                if (value != null) {
+                  context.read<LanguageCubit>().setLanguage(value);
+                }
+              },
+            ),
+          ],
         );
       },
     );
@@ -260,36 +239,53 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  changeLanguageSection(),
-                  SizedBox(height: 10),
-                  headerSection(),
-                  SizedBox(height: 40),
-                  nameFieldSection(),
-                  SizedBox(height: 20),
-                  emailFieldSection(),
-                  SizedBox(height: 20),
-                  passwordFieldSection(),
-                  SizedBox(height: 40),
-                  buttonSubmitSection(),
-                  SizedBox(height: 20),
-                  registerButtonSection(),
-                  SizedBox(height: 20),
-                  bottomSection(),
-                ],
+    return BlocConsumer<RegisterCubit, RegisterState>(
+      listener: (context, state) {
+        if (state.globalState.isFailed) {
+          AppTopSnackBar(context).showDanger(state.message);
+        }
+
+        if (state.globalState.isSuccessSubmit) {
+          AppTopSnackBar(context).showSuccess(state.message);
+          context.pop();
+        }
+      },
+      builder: (context, state) {
+        return AppLoading(
+          isLoading: state.globalState.isLoading,
+          child: Scaffold(
+            body: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Form(
+                  key: _formKey,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        changeLanguageSection(),
+                        SizedBox(height: 10),
+                        headerSection(),
+                        SizedBox(height: 40),
+                        nameFieldSection(),
+                        SizedBox(height: 20),
+                        emailFieldSection(),
+                        SizedBox(height: 20),
+                        passwordFieldSection(),
+                        SizedBox(height: 40),
+                        buttonSubmitSection(),
+                        SizedBox(height: 20),
+                        registerButtonSection(),
+                        SizedBox(height: 20),
+                        bottomSection(),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

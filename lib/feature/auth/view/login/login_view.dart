@@ -181,37 +181,34 @@ class _LoginViewState extends State<LoginView> {
         }
       },
       builder: (context, state) {
-        return AppLoading(
-          isLoading: state.status.isLoading,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              DropdownButton<String>(
-                value: state.languageCode,
-                items: [
-                  DropdownMenuItem(
-                    value: 'en',
-                    child: Text(
-                      'English',
-                      style: appTextTheme(context).bodySmall,
-                    ),
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            DropdownButton<String>(
+              value: state.languageCode,
+              items: [
+                DropdownMenuItem(
+                  value: 'en',
+                  child: Text(
+                    'English',
+                    style: appTextTheme(context).bodySmall,
                   ),
-                  DropdownMenuItem(
-                    value: 'id',
-                    child: Text(
-                      'Indonesia',
-                      style: appTextTheme(context).bodySmall,
-                    ),
+                ),
+                DropdownMenuItem(
+                  value: 'id',
+                  child: Text(
+                    'Indonesia',
+                    style: appTextTheme(context).bodySmall,
                   ),
-                ],
-                onChanged: (value) {
-                  if (value != null) {
-                    context.read<LanguageCubit>().setLanguage(value);
-                  }
-                },
-              ),
-            ],
-          ),
+                ),
+              ],
+              onChanged: (value) {
+                if (value != null) {
+                  context.read<LanguageCubit>().setLanguage(value);
+                }
+              },
+            ),
+          ],
         );
       },
     );
