@@ -10,6 +10,8 @@ import 'package:story_app/core/utils/global_state.dart';
 import 'package:story_app/feature/settings/cubit/logout/logout_cubit.dart';
 import 'package:story_app/main.dart';
 
+import '../../../core/logic/change_theme/change_theme_cubit.dart';
+
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
 
@@ -30,6 +32,28 @@ class _SettingsViewState extends State<SettingsView> {
           ),
         ),
         centerTitle: true,
+      );
+    }
+
+    Widget changeThemeFeature() {
+      return BlocBuilder<ChangeThemeCubit, ChangeThemeState>(
+        builder: (context, state) {
+          return ListTile(
+            title: Text(
+              'Change Theme',
+              style: appTextTheme(context).bodyMedium?.copyWith(
+                color: appColorScheme(context).primary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            trailing: Switch(
+              value: state.isDarkMode,
+              onChanged: (value) {
+                context.read<ChangeThemeCubit>().setTheme(value);
+              },
+            ),
+          );
+        },
       );
     }
 
@@ -61,7 +85,7 @@ class _SettingsViewState extends State<SettingsView> {
             appBar: appBar(),
             body: Padding(
               padding: EdgeInsets.all(20),
-              child: Column(children: [buttonLogout()]),
+              child: Column(children: [changeThemeFeature(), buttonLogout()]),
             ),
           ),
         );
